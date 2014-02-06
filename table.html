@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>kolko i krzyzyk</title>
+	<style type="text/css">
+	table, tr, td {
+		border: 1px solid blue;
+		border-collapse: collapse;
+	}
+	td {
+		padding: 15px;
+		background-color: pink;
+	}
+	</style>
+</head>
+<body>
+<table>
+</table>
+
+<script type="text/javascript">
+
+var num_rows = 19;
+var num_cells = 19;
+var board = document.getElementsByTagName("table")[0];
+var sign="white";
+
+board.onclick=function(e){make_move(e)};
+for(var r=0; r <= num_rows; r++) {
+	var row = board.insertRow(r);
+	for(var c=0; c <= num_rows; c++) {
+		row.insertCell(c);
+	}
+};
+
+
+function make_move(click) {
+	var clickedCell = click.target;
+	if (!clickedCell.style.backgroundColor) {
+		clickedCell.style.backgroundColor=sign;
+		c_row=clickedCell.parentNode.rowIndex;
+		c_col=clickedCell.cellIndex;
+		
+		if(checkFive(c_col, c_row, clickedCell)) Win();
+		if(sign=="white") sign="black"; else sign="white";
+	}
+};
+
+function checkFive(cCol, cRow, clicked) {
+
+noInRow = 0;
+maxInRow = 0;
+
+	hFirst = Math.max(0,cCol-4);
+	hLast = Math.min(num_cells, cCol+4);
+	vFirst = Math.max(0,cRow-4);
+	vLast = Math.min(num_rows, cRow+4);
+
+// case 1: horizontal
+	for(n=hFirst; n<=hLast; n+=1) {
+		if(board.rows[cRow].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if (noInRow==5) return true;
+	};
+// case 2: vertical
+	for(n=vFirst; n<=vLast; n+=1) {
+		if(board.rows[n].cells[cCol].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if (noInRow==5) return true;
+	};
+// case 3: diagonal left
+	for(n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
+		if(board.rows[m].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if (noInRow==5) return true;
+	};
+// case 4: diagonal right
+	for(n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
+		if(board.rows[m].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if (noInRow==5) return true;
+	};	
+	return false;
+}
+
+function Win() {
+	alert(sign+" wins!");
+	var cells = board.getElementsByTagName("td");
+	for(cell in cells) {
+		if(cells.propertyIsEnumerable(cell)) cells[cell].style.backgroundColor="";
+	}
+}
+	
+</script>
+
+</body>
+</html>
