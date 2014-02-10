@@ -36,6 +36,9 @@ for(var r=0; r <= num_rows; r++) {
 
 
 function make_move(click) {
+	click.stopPropagation(); 
+	click.preventDefault();
+	alert("You clicked, Fucker!!!");
 	var clickedCell = click.target;
 	if (!clickedCell.style.backgroundColor) {
 		clickedCell.style.backgroundColor=sign;
