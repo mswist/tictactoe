@@ -5,13 +5,17 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>kolko i krzyzyk</title>
 	<style type="text/css">
+	body {
+		margin: 0px;
+	}
+	
 	table, tr, td {
 		border: 1px solid blue;
 		border-collapse: collapse;
 	}
 	td {
 		padding: 15px;
-		background-color: pink;
+		background-color: #CACACA;
 	}
 	</style>
 </head>
@@ -21,18 +25,30 @@
 
 <script type="text/javascript">
 
-var num_rows = 25;
-var num_cells = 25;
-var board = document.getElementsByTagName("table")[0];
-var sign="white";
+	var board;
+	var sign="white";
+	var num_rows = 25;
+	var num_cells = 25;
+	
+window.onload=function(){
 
-board.onclick=function(e){make_move(e)};
-for(var r=0; r <= num_rows; r++) {
-	var row = board.insertRow(r);
-	for(var c=0; c <= num_rows; c++) {
-		row.insertCell(c);
-	}
-};
+	board = document.getElementsByTagName("table")[0];
+	var height = window.innerHeight-2;
+	var width = window.innerWidth-2;
+	num_rows = Math.floor(height/31);
+	num_cells = Math.floor(width/31);
+
+	board.onclick=function(e){make_move(e)};
+
+	for(var r=0; r <= num_rows; r++) {
+		var row = board.insertRow(r);
+		for(var c=0; c <= num_cells; c++) {
+			row.insertCell(c);
+		}
+	};
+
+}
+
 
 
 function make_move(click) {
