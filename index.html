@@ -37,7 +37,7 @@ window.onload=function(){
 	var width = window.innerWidth-2;
 	num_rows = Math.floor(height/31);
 	num_cells = Math.floor(width/31);
-
+	alert(height+' '+width+' '+num_rows+' '+num_cells);
 	board.onclick=function(e){make_move(e)};
 
 	for(var r=0; r <= num_rows; r++) {
