@@ -4,7 +4,8 @@ html, body {
 }
 
 body {
-    background-color: beige;
+    background-image: url("./paper-textured.jpg");
+    background-size: contain;
     margin: 0px;
     padding: 0px;
     display: flex;
@@ -21,6 +22,5 @@ table, tr, td {
 td {
     min-width: 30px;
     height: 30px;
-    background-color: #CACACA;
     box-sizing: border-box;
 }
