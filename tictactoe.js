@@ -5,10 +5,9 @@ var num_cells = 25;
 	
 window.onload=function(){
 	
-	alert(`window.innerHeight: ${window.innerHeight}
-		viewport.height: ${window.visualViewport.height}
-		html.clientHeight: ${document.querySelector("html").clientHeight}
-	`)
+	alert(`window.innerHeight: ${window.innerHeight},
+viewport.height: ${window.visualViewport.height},
+html.clientHeight: ${document.querySelector("html").clientHeight}`)
 	
 	let vh = window.innerHeight * 0.01;
 	// Then we set the value in the --vh custom property to the root of the document
