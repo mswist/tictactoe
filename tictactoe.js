@@ -4,7 +4,11 @@ var num_rows = 25;
 var num_cells = 25;
 	
 window.onload=function(){
-
+	
+	let vh = window.innerHeight * 0.01;
+	// Then we set the value in the --vh custom property to the root of the document
+	document.documentElement.style.setProperty('--vh', `${vh}px`);
+	
 	board = document.getElementsByTagName("table")[0];
 	var height = window.innerHeight-2;
 	var width = window.innerWidth-2;
