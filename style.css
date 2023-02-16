@@ -18,4 +18,5 @@ td {
     min-width: 30px;
     height: 30px;
     background-color: #CACACA;
+    box-sizing: border-box;
 }
