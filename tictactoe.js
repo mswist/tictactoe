@@ -39,7 +39,7 @@ function make_move(click) {
 		c_row=clickedCell.parentNode.rowIndex;
 		c_col=clickedCell.cellIndex;
 		
-		if(checkFive(c_col, c_row, clickedCell)) Win();
+		setTimeout(()=> {if(checkFive(c_col, c_row, clickedCell, sign)) Win();}, 0)
 		if(sign=="circle") sign="cross"; else sign="circle";
 	}
 
@@ -50,33 +50,33 @@ function make_move(click) {
       })
 };
 
-function checkFive(cCol, cRow, clicked) {
+function checkFive(cCol, cRow, clicked, sign) {
 
-noInRow = 0;
-maxInRow = 0;
+	let noInRow = 0;
+	let maxInRow = 0;
 
-	hFirst = Math.max(0,cCol-4);
-	hLast = Math.min(num_cells, cCol+4);
-	vFirst = Math.max(0,cRow-4);
-	vLast = Math.min(num_rows, cRow+4);
+	const hFirst = Math.max(0,cCol-4);
+	const hLast = Math.min(num_cells, cCol+4);
+	const vFirst = Math.max(0,cRow-4);
+	const vLast = Math.min(num_rows, cRow+4);
 
 // case 1: horizontal
-	for(n=hFirst; n<=hLast; n+=1) {
+	for(let n=hFirst; n<=hLast; n+=1) {
 		if(board.rows[cRow].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 2: vertical
-	for(n=vFirst; n<=vLast; n+=1) {
+	for(let n=vFirst; n<=vLast; n+=1) {
 		if(board.rows[n].cells[cCol].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 3: diagonal left
-	for(n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
+	for(let n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
 		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 4: diagonal right
-	for(n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
+	for(let n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
 		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};	
