@@ -113,10 +113,12 @@ function checkFive(cCol, cRow, clicked, sign) {
 }
 
 function Win(sign, array) {
-	array.forEach(cell => {
-		board.rows[cell[0]].cells[cell[1]].style.backgroundColor = "rgba(255,0,0,0.3)"
-	})
-	setTimeout(() => {alert(sign+" wins!");	}, 250); 
+	setTimeout(() => {
+		array.forEach(cell => {
+			board.rows[cell[0]].cells[cell[1]].style.backgroundColor = "rgba(255,0,0,0.3)"
+		})
+		alert(sign+" wins!");	
+	}, 300); 
 /* 	var cells = board.getElementsByTagName("td");
 	for(cell in cells) {
 		if(cells.propertyIsEnumerable(cell)) cells[cell].dataset.sign="";
