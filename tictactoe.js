@@ -1,8 +1,13 @@
 var board;
-var sign = "white";
+var sign = "circle";
 var num_rows = 25;
 var num_cells = 25;
-	
+
+const mark = {
+	"circle": document.getElementById("circle").content.firstElementChild,
+	"cross": document.getElementById("cross").content.firstElementChild
+}
+
 window.onload=function(){
 	
 	board = document.getElementsByTagName("table")[0];
@@ -27,14 +32,22 @@ function make_move(click) {
 	click.stopPropagation(); 
 	click.preventDefault();
 	var clickedCell = click.target;
-	if (!clickedCell.style.backgroundColor) {
-		clickedCell.style.backgroundColor=sign;
+	if (!clickedCell.children.length) {
+		
+		clickedCell.appendChild(mark[sign].cloneNode(true))
+		clickedCell.dataset.sign = sign
 		c_row=clickedCell.parentNode.rowIndex;
 		c_col=clickedCell.cellIndex;
 		
 		if(checkFive(c_col, c_row, clickedCell)) Win();
-		if(sign=="white") sign="black"; else sign="white";
+		if(sign=="circle") sign="cross"; else sign="circle";
 	}
+
+	supChannel.send({
+        type: 'broadcast',
+        event: 'move',
+        payload: { org: 'supabase' },
+      })
 };
 
 function checkFive(cCol, cRow, clicked) {
@@ -49,22 +62,22 @@ maxInRow = 0;
 
 // case 1: horizontal
 	for(n=hFirst; n<=hLast; n+=1) {
-		if(board.rows[cRow].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if(board.rows[cRow].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 2: vertical
 	for(n=vFirst; n<=vLast; n+=1) {
-		if(board.rows[n].cells[cCol].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if(board.rows[n].cells[cCol].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 3: diagonal left
 	for(n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
-		if(board.rows[m].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};
 // case 4: diagonal right
 	for(n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
-		if(board.rows[m].cells[n].style.backgroundColor==sign) noInRow+=1; else noInRow=0;
+		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
 		if (noInRow==5) return true;
 	};	
 	return false;
@@ -74,6 +87,6 @@ function Win() {
 	alert(sign+" wins!");
 	var cells = board.getElementsByTagName("td");
 	for(cell in cells) {
-		if(cells.propertyIsEnumerable(cell)) cells[cell].style.backgroundColor="";
+		if(cells.propertyIsEnumerable(cell)) cells[cell].dataset.sign="";
 	}
 }

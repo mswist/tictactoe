@@ -13,14 +13,52 @@ body {
     align-items: center;
     width: 100vw;
 }
-	
+
+table {
+    table-layout: fixed;
+}
+
+svg {
+    display: block;
+}
+
 table, tr, td {
     border: 1px solid rgba(0,0,255,0.3);
     border-collapse: collapse;
+    overflow: hidden;
+    padding: 0;
 }
 
 td {
-    min-width: 30px;
-    height: 30px;
+    min-width: 31px;
+    height: 31px;
     box-sizing: border-box;
+}
+
+.circle {
+    stroke-dasharray: 82;
+    stroke-dashoffset: 82;
+    animation: draw 300ms linear;
+    animation-fill-mode: forwards;
+}
+
+.cross1 {
+    stroke-dasharray: 38;
+    stroke-dashoffset: 38;
+    animation: draw 150ms linear;
+    animation-fill-mode: forwards;
+}
+
+.cross2 {
+    stroke-dasharray: 39;
+    stroke-dashoffset: 39;
+    animation: draw 150ms linear;
+    animation-delay: 150ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
 }

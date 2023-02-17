@@ -4,7 +4,7 @@ const { createClient } = supabase
 
 const supClient = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-const channel = supClient.channel('test', {
+const supChannel = supClient.channel('test', {
   config: {
     broadcast: {
       self: true,
@@ -12,11 +12,11 @@ const channel = supClient.channel('test', {
   },
 })
 
-channel
+supChannel
   .on('broadcast', { event: 'supa' }, (payload) => console.log(payload))
   .subscribe((status) => {
     if (status === 'SUBSCRIBED') {
-      channel.send({
+      supChannel.send({
         type: 'broadcast',
         event: 'supa',
         payload: { org: 'supabase' },
