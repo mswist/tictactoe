@@ -39,7 +39,7 @@ function make_move(click) {
 		c_row=clickedCell.parentNode.rowIndex;
 		c_col=clickedCell.cellIndex;
 		
-		setTimeout(()=> {if(checkFive(c_col, c_row, clickedCell, sign)) Win();}, 0)
+		setTimeout(()=> {if(checkFive(c_col, c_row, clickedCell, sign)) Win(sign);}, 0)
 		if(sign=="circle") sign="cross"; else sign="circle";
 	}
 
@@ -83,7 +83,7 @@ function checkFive(cCol, cRow, clicked, sign) {
 	return false;
 }
 
-function Win() {
+function Win(sign) {
 	alert(sign+" wins!");
 	var cells = board.getElementsByTagName("td");
 	for(cell in cells) {
