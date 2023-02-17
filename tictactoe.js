@@ -39,7 +39,8 @@ function make_move(click) {
 		c_row=clickedCell.parentNode.rowIndex;
 		c_col=clickedCell.cellIndex;
 		
-		setTimeout(()=> {if(checkFive(c_col, c_row, clickedCell, sign)) Win(sign);}, 0)
+		let five = checkFive(c_col, c_row, clickedCell, sign)
+		if(five?.win) Win(sign, five.array);
 		if(sign=="circle") sign="cross"; else sign="circle";
 	}
 
@@ -53,7 +54,7 @@ function make_move(click) {
 function checkFive(cCol, cRow, clicked, sign) {
 
 	let noInRow = 0;
-	let maxInRow = 0;
+	let fiveArray = [];
 
 	const hFirst = Math.max(0,cCol-4);
 	const hLast = Math.min(num_cells, cCol+4);
@@ -62,31 +63,62 @@ function checkFive(cCol, cRow, clicked, sign) {
 
 // case 1: horizontal
 	for(let n=hFirst; n<=hLast; n+=1) {
-		if(board.rows[cRow].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
-		if (noInRow==5) return true;
+		if(board.rows[cRow].cells[n].dataset.sign==sign) {
+			noInRow += 1;
+			fiveArray.push([cRow,n])
+		} 
+		else {
+			noInRow = 0;
+			fiveArray = []
+		}
+		if (noInRow==5) return {"win": true, "array": fiveArray};
 	};
 // case 2: vertical
 	for(let n=vFirst; n<=vLast; n+=1) {
-		if(board.rows[n].cells[cCol].dataset.sign==sign) noInRow+=1; else noInRow=0;
-		if (noInRow==5) return true;
+		if(board.rows[n].cells[cCol].dataset.sign==sign) {
+			noInRow += 1;
+			fiveArray.push([n,cCol])
+		} 
+		else {
+			noInRow = 0;
+			fiveArray = []
+		}
+		if (noInRow==5) return {"win": true, "array": fiveArray};
 	};
 // case 3: diagonal left
 	for(let n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
-		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
-		if (noInRow==5) return true;
+		if(board.rows[m].cells[n].dataset.sign==sign) {
+			noInRow += 1;
+			fiveArray.push([m,n])
+		} 
+		else {
+			noInRow = 0;
+			fiveArray = []
+		}
+		if (noInRow==5) return {"win": true, "array": fiveArray};
 	};
 // case 4: diagonal right
 	for(let n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
-		if(board.rows[m].cells[n].dataset.sign==sign) noInRow+=1; else noInRow=0;
-		if (noInRow==5) return true;
+		if(board.rows[m].cells[n].dataset.sign==sign) {
+			noInRow += 1;
+			fiveArray.push([m,n])
+		} 
+		else {
+			noInRow = 0;
+			fiveArray = []
+		}
+		if (noInRow==5) return {"win": true, "array": fiveArray};
 	};	
 	return false;
 }
 
-function Win(sign) {
-	alert(sign+" wins!");
-	var cells = board.getElementsByTagName("td");
+function Win(sign, array) {
+	array.forEach(cell => {
+		board.rows[cell[0]].cells[cell[1]].style.backgroundColor = "rgba(255,0,0,0.3)"
+	})
+	setTimeout(() => {alert(sign+" wins!");	}, 250); 
+/* 	var cells = board.getElementsByTagName("td");
 	for(cell in cells) {
 		if(cells.propertyIsEnumerable(cell)) cells[cell].dataset.sign="";
-	}
+	} */
 }
