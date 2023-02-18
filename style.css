@@ -1,17 +1,8 @@
-html, body {
-  height: 100%;
-  width: 100%;
-}
-
 body {
     background-image: url("./paper-textured.jpg");
     background-size: contain;
     margin: 0px;
     padding: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
 }
 
 table {
