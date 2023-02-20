@@ -1,6 +1,7 @@
 const board = document.getElementsByTagName("table")[0];
 const num_rows = 100;
 const num_cells = 100;
+let scroll = 0;
 
 const mark = {
 	"circle": document.getElementById("circle").content.firstElementChild,
@@ -17,7 +18,7 @@ window.onload=function(){
 		for(let c=0; c <= num_cells; c++) {
 			row.insertCell(c);
 		}
-	};
+	}
 }
 
 function make_move(click) {
@@ -41,7 +42,7 @@ function make_move(click) {
       })
 };
 
-function checkFive(cCol, cRow, sign) {
+function checkFive(cRow, cCol, sign) {
 
 	let checkFive = {
 		"noInRow": 0,
@@ -96,3 +97,8 @@ function Win(sign, array) {
 		alert(`${sign} wins!!!`);	
 	}, 300); 
 }
+
+setTimeout(
+	()=>{
+		window.scrollTo(document.body.scrollWidth/2 - window.innerWidth/2, document.body.scrollHeight/2 - window.innerHeight/2)},
+	5)
