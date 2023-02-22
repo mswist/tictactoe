@@ -1,6 +1,6 @@
 const board = document.getElementsByTagName("table")[0];
-const num_rows = 100;
-const num_cells = 100;
+const num_rows = 50;
+const num_cells = 50;
 let scroll = 0;
 
 const mark = {
