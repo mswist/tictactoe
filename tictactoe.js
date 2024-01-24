@@ -24,15 +24,16 @@ window.onload=function(){
 function make_move(click) {
 	let clickedCell = click.target;
 	if (!clickedCell.children.length) {
-		
-		clickedCell.appendChild(mark[sign].cloneNode(true))
-		clickedCell.dataset.sign = sign
+		let currentSign = sign
+		if(sign=="circle") sign="cross"; else sign="circle";
+
+		clickedCell.appendChild(mark[currentSign].cloneNode(true))
+		clickedCell.dataset.currentSign = currentSign
 		curRow=clickedCell.parentNode.rowIndex;
 		curCol=clickedCell.cellIndex;
 		
-		let five = checkFive(curRow, curCol, sign)
-		if(five.win) Win(sign, five.array);
-		if(sign=="circle") sign="cross"; else sign="circle";
+		let five = checkFive(curRow, curCol, currentSign)
+		if(five.win) Win(currentSign, five.array);
 	}
 
 	supChannel.send({
