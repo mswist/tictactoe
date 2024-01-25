@@ -22,7 +22,7 @@ window.onload=function(){
 }
 
 function make_move(click) {
-	let clickedCell = click.target;
+	let clickedCell = click.target.closest("td");
 	if (!clickedCell.dataset.sign) {
 		let currentSign = sign
 		if(sign=="circle") sign="cross"; else sign="circle";
