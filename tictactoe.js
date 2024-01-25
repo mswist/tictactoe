@@ -23,12 +23,12 @@ window.onload=function(){
 
 function make_move(click) {
 	let clickedCell = click.target;
-	if (!clickedCell.children.length) {
+	if (!clickedCell.dataset.sign) {
 		let currentSign = sign
 		if(sign=="circle") sign="cross"; else sign="circle";
-
+		clickedCell.dataset.sign = currentSign
 		clickedCell.appendChild(mark[currentSign].cloneNode(true))
-		clickedCell.dataset.currentSign = currentSign
+
 		curRow=clickedCell.parentNode.rowIndex;
 		curCol=clickedCell.cellIndex;
 		
