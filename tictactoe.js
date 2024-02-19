@@ -1,24 +1,37 @@
 const board = document.getElementsByTagName("table")[0];
 const num_rows = 50;
 const num_cells = 50;
-let scroll = 0;
 
 const mark = {
 	"circle": document.getElementById("circle").content.firstElementChild,
 	"cross": document.getElementById("cross").content.firstElementChild
 }
 
+//object containing all moves
+const moves = {
+	"last": {},
+	"all": []
+}
+
+//current sign
 let sign = "circle";
 
-window.onload=function(){
+window.addEventListener("load", () => { 
+	drawBoard(board)
+	setTimeout(
+		()=> {
+			window.scrollTo(document.body.scrollWidth/2 - window.innerWidth/2, document.body.scrollHeight/2 - window.innerHeight/2)},
+		5)
+})
 	
-	board.onclick=function(e){make_move(e)};
+function drawBoard(board) {
+	board.onclick = (e) => { make_move(e) };
 	for(let r=0; r <= num_rows; r++) {
 		let row = board.insertRow(r);
 		for(let c=0; c <= num_cells; c++) {
 			row.insertCell(c);
 		}
-	}
+	}	
 }
 
 function make_move(click) {
@@ -98,8 +111,3 @@ function Win(sign, array) {
 		alert(`${sign} wins!!!`);	
 	}, 300); 
 }
-
-setTimeout(
-	()=>{
-		window.scrollTo(document.body.scrollWidth/2 - window.innerWidth/2, document.body.scrollHeight/2 - window.innerHeight/2)},
-	5)
