@@ -15,6 +15,7 @@ const supChannel = supClient.channel('test', {
 supChannel
   .on('broadcast', { event: 'supa' }, (payload) => console.log(payload))
   .subscribe((status) => {
+    console.log(status)
     if (status === 'SUBSCRIBED') {
       supChannel.send({
         type: 'broadcast',
