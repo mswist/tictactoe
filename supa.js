@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://lbozubrlkudonsaefqet.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxib3p1YnJsa3Vkb25zYWVmcWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzY1NjI1ODIsImV4cCI6MTk5MjEzODU4Mn0.OagUu0A_m1sG7eeUi_BGKOuNa1nJ6OnrpgdmuNeij_E"
+const SUPABASE_URL = "https://yvlybnjleempsjcoyovx.supabase.co"
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bHlibmpsZWVtcHNqY295b3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0Mzk3NzIsImV4cCI6MjA1NTAxNTc3Mn0.lJOz1oFHyqC94lRxSiXT1EVzAr9Ldf53Q-zTtx3q_A8"
 const { createClient } = supabase
 
 const supClient = createClient(SUPABASE_URL, SUPABASE_KEY)
