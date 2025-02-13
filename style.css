@@ -34,22 +34,22 @@ td {
 .circle {
     stroke-dasharray: 82;
     stroke-dashoffset: 82;
-    animation: draw 300ms linear;
+    animation: draw 200ms linear;
     animation-fill-mode: forwards;
 }
 
 .cross1 {
     stroke-dasharray: 38;
     stroke-dashoffset: 38;
-    animation: draw 150ms linear;
+    animation: draw 100ms linear;
     animation-fill-mode: forwards;
 }
 
 .cross2 {
     stroke-dasharray: 39;
     stroke-dashoffset: 39;
-    animation: draw 150ms linear;
-    animation-delay: 150ms;
+    animation: draw 100ms linear;
+    animation-delay: 100ms;
     animation-fill-mode: forwards;
 }
 
