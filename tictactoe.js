@@ -1,3 +1,5 @@
+alert(window.devicePixelRatio || 1)
+
 const board = document.getElementsByTagName("table")[0];
 const num_rows = 50;
 const num_cells = 50;
