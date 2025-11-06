@@ -22,9 +22,13 @@ table, tr, td {
     padding: 0;
 }
 
+#board {
+    --cell-size: 31px;
+}
+
 td {
-    min-width: 31px;
-    height: 31px;
+    min-width: var(--cell-size);
+    height: var(--cell-size);
     box-sizing: border-box;
 }
 

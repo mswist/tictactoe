@@ -1,8 +1,6 @@
-alert(window.devicePixelRatio || 1)
-
-const board = document.getElementsByTagName("table")[0];
-const num_rows = 50;
-const num_cells = 50;
+const BOARD = document.getElementById("board");
+const BOARD_SIZE = 50;
+const CELL_SIZE = 31;
 
 const mark = {
 	"circle": document.getElementById("circle").content.firstElementChild,
@@ -18,13 +16,14 @@ const moves = {
 //current sign
 let sign = "circle";
 
-drawBoard(board)
+drawBoard()
 	
-function drawBoard(board) {
-	board.onclick = (e) => { make_move(e) };
-	for(let r=0; r <= num_rows; r++) {
-		let row = board.insertRow(r);
-		for(let c=0; c <= num_cells; c++) {
+function drawBoard() {
+	BOARD.style.setProperty("--board-size", `${BOARD_SIZE * (window.devicePixelRatio || 1)}px`);
+	BOARD.onclick = (e) => { make_move(e) };
+	for(let r=0; r <= BOARD_SIZE; r++) {
+		let row = BOARD.insertRow(r);
+		for(let c=0; c <= BOARD_SIZE; c++) {
 			row.insertCell(c);
 		}
 	}	
@@ -68,31 +67,31 @@ function checkFive(cRow, cCol, sign) {
 	}
 
 	const hFirst = Math.max(0,cCol-4);
-	const hLast = Math.min(num_cells, cCol+4);
+	const hLast = Math.min(BOARD_SIZE, cCol+4);
 	const vFirst = Math.max(0,cRow-4);
-	const vLast = Math.min(num_rows, cRow+4);
+	const vLast = Math.min(BOARD_SIZE, cRow+4);
 
 // case 1: horizontal
 	for(let n=hFirst; n<=hLast; n+=1) {
-		if(board.rows[cRow].cells[n].dataset.sign==sign) checkFive.set([cRow,n])
+		if(BOARD.rows[cRow].cells[n].dataset.sign==sign) checkFive.set([cRow,n])
 		else checkFive.clear()
 		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 2: vertical
 	for(let n=vFirst; n<=vLast; n+=1) {
-		if(board.rows[n].cells[cCol].dataset.sign==sign) checkFive.set([n,cCol]) 
+		if(BOARD.rows[n].cells[cCol].dataset.sign==sign) checkFive.set([n,cCol]) 
 		else checkFive.clear()
 		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 3: diagonal left
 	for(let n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
-		if(board.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
+		if(BOARD.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
 		else checkFive.clear()
 		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 4: diagonal right
 	for(let n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
-		if(board.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
+		if(BOARD.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
 		else checkFive.clear()
 		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
 	};	
@@ -101,7 +100,7 @@ function checkFive(cRow, cCol, sign) {
 
 function Win(sign, array) {
 	array.forEach(cell => {
-		board.rows[cell[0]].cells[cell[1]].style.backgroundColor = "rgba(255,0,0,0.3)"
+		BOARD.rows[cell[0]].cells[cell[1]].style.backgroundColor = "rgba(255,0,0,0.3)"
 	})
 	setTimeout(() => {
 		alert(`${sign} wins!!!`);	
