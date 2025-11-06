@@ -19,7 +19,7 @@ let sign = "circle";
 drawBoard()
 	
 function drawBoard() {
-	BOARD.style.setProperty("--board-size", `${BOARD_SIZE * (window.devicePixelRatio || 1)}px`);
+	BOARD.style.setProperty("--cell-size", `${BOARD_SIZE * (window.devicePixelRatio || 1)}px`);
 	BOARD.onclick = (e) => { make_move(e) };
 	for(let r=0; r <= BOARD_SIZE; r++) {
 		let row = BOARD.insertRow(r);
