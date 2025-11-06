@@ -16,13 +16,7 @@ const moves = {
 //current sign
 let sign = "circle";
 
-window.addEventListener("load", () => { 
-	drawBoard(board)
-	setTimeout(
-		()=> {
-			window.scrollTo(document.body.scrollWidth/2 - window.innerWidth/2, document.body.scrollHeight/2 - window.innerHeight/2)},
-		5)
-})
+drawBoard(board)
 	
 function drawBoard(board) {
 	board.onclick = (e) => { make_move(e) };
