@@ -7,7 +7,6 @@ const supClient = createClient(SUPABASE_URL, SUPABASE_KEY)
 const supChannel = supClient.channel('tictactoe')
 
 supChannel
-  .on('broadcast', { event: 'move' }, (payload) => console.log(payload))
   .subscribe((status) => {
     console.log(status)
     if (status === 'SUBSCRIBED') {return})
