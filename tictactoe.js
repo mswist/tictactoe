@@ -47,7 +47,7 @@ function make_move(click) {
 	supChannel.send({
         type: 'broadcast',
         event: 'move',
-        payload: { org: 'supabase' },
+        payload: {row: curRow, col: curCol, sign: currentSign},
       })
 };
 
