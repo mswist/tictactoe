@@ -31,24 +31,25 @@ function drawBoard() {
 
 function make_move(click) {
 	let clickedCell = click.target.closest("td");
+	
 	if (!clickedCell.dataset.sign) {
 		let currentSign = sign
 		if(sign=="circle") sign="cross"; else sign="circle";
 		clickedCell.dataset.sign = currentSign
 		clickedCell.appendChild(mark[currentSign].cloneNode(true))
 
-		curRow=clickedCell.parentNode.rowIndex;
-		curCol=clickedCell.cellIndex;
+		let curRow=clickedCell.parentNode.rowIndex;
+		let curCol=clickedCell.cellIndex;
 		
 		let five = checkFive(curRow, curCol, currentSign)
 		if(five.win) Win(currentSign, five.array);
-	}
 
-	supChannel.send({
-        type: 'broadcast',
-        event: 'move',
-        payload: {row: curRow, col: curCol, sign: currentSign},
-      })
+		supChannel.send({
+	        type: 'broadcast',
+	        event: 'move',
+	        payload: {row: curRow, col: curCol, sign: currentSign},
+	    })
+	}
 };
 
 function checkFive(cRow, cCol, sign) {
