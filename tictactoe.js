@@ -47,18 +47,21 @@ function make_move(curRow, curCol, currentSign, clickedCell) {
 	cell = clickedCell || BOARD.rows[curRow].cells[curCol]
 	cell.appendChild(mark[currentSign].cloneNode(true))
 	if(sign=="circle") sign="cross"; else sign="circle";
-		
-	let five = checkFive(curRow, curCol, currentSign)
-	if(five.win) Win(currentSign, five.array);
 
-	//clickedCell is only passed if move is made locally - and only then should be broadcasted
-	if(clickedCell) {
-		supChannel.send({
-			type: 'broadcast',
-			event: 'move',
-			move: {row: curRow, col: curCol, sign: currentSign},
-		})	
-	}
+	queueMicrotask(() => {
+		console.log(cell.children)
+  		let five = checkFive(curRow, curCol, currentSign)
+		if(five.win) Win(currentSign, five.array);
+		
+		//clickedCell is only passed if move is made locally - and only then should be broadcasted
+		if(clickedCell) {
+			supChannel.send({
+				type: 'broadcast',
+				event: 'move',
+				move: {row: curRow, col: curCol, sign: currentSign},
+			})	
+		}
+	});
 }
 
 function checkFive(cRow, cCol, sign) {
