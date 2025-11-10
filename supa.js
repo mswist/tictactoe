@@ -4,7 +4,7 @@ const { createClient } = supabase
 
 const supClient = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-const supChannel = supClient.channel('test', {
+const supChannel = supClient.channel('tictactoe', {
   config: {
     broadcast: {
       self: true,
@@ -13,13 +13,13 @@ const supChannel = supClient.channel('test', {
 })
 
 supChannel
-  .on('broadcast', { event: 'supa' }, (payload) => console.log(payload))
+  .on('broadcast', { event: 'move' }, (payload) => console.log(payload))
   .subscribe((status) => {
     console.log(status)
     if (status === 'SUBSCRIBED') {
       supChannel.send({
         type: 'broadcast',
-        event: 'supa',
+        event: 'joined',
         payload: { org: 'supabase' },
       })
     }
