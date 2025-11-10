@@ -56,7 +56,7 @@ function make_move(curRow, curCol, currentSign, clickedCell) {
 		supChannel.send({
 			type: 'broadcast',
 			event: 'move',
-			payload: {row: curRow, col: curCol, sign: currentSign},
+			move: {row: curRow, col: curCol, sign: currentSign},
 		})	
 	}
 }
@@ -118,6 +118,6 @@ function Win(sign, array) {
 }
 
 supChannel.on('broadcast', { event: 'move' }, (payload) => {
-	console.log(payload)
-	make_move(payload.curRow, payload.curCol, payload.currentSign)
+	console.log(event)
+	make_move(event.move.curRow, event.move.curCol, event.move.currentSign)
 })
