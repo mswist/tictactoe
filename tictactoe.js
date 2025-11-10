@@ -119,5 +119,5 @@ function Win(sign, array) {
 
 supChannel.on('broadcast', { event: 'move' }, (payload) => {
 	console.log(payload)
-	make_move(payload.move.curRow, payload.move.curCol, payload.move.currentSign)
+	make_move(payload.move.row, payload.move.col, payload.move.sign)
 })
