@@ -52,7 +52,7 @@ function make_move(curRow, curCol, currentSign, clickedCell) {
 	if(five.win) Win(currentSign, five.array);
 
 	//clickedCell is only passed if move is made locally - and only then should be broadcasted
-	if(clickedCell == null) {
+	if(clickedCell) {
 		supChannel.send({
 			type: 'broadcast',
 			event: 'move',
@@ -116,3 +116,8 @@ function Win(sign, array) {
 		alert(`${sign} wins!!!`);	
 	}, 300); 
 }
+
+supChannel.on('broadcast', { event: 'move' }, (payload) => {
+	console.log(payload)
+	make_move(payload.curRow, payload.curCol, payload.currentSign)
+})
