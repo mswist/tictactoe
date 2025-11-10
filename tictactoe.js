@@ -38,7 +38,7 @@ function click_cell(click) {
 		let curRow=clickedCell.parentNode.rowIndex;
 		let curCol=clickedCell.cellIndex;
 
-		make_move(curRow, curCol, currentSign)	
+		make_move(curRow, curCol, currentSign, clickedCell)	
 
 	}
 };
