@@ -10,11 +10,6 @@ supChannel
   .on('broadcast', { event: 'move' }, (payload) => console.log(payload))
   .subscribe((status) => {
     console.log(status)
-    if (status === 'SUBSCRIBED') {
-      supChannel.send({
-        type: 'broadcast',
-        event: 'joined',
-        payload: { org: 'supabase' },
-      })
+    if (status === 'SUBSCRIBED') {return})
     }
   })
