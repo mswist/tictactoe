@@ -20,7 +20,7 @@ drawBoard()
 	
 function drawBoard() {
 	BOARD.style.setProperty("--cell-size", `${CELL_SIZE * (window.devicePixelRatio || 1)}px`);
-	BOARD.onclick = (e) => { make_move(e) };
+	BOARD.onclick = (e) => { click_cell(e) };
 	for(let r=0; r <= BOARD_SIZE; r++) {
 		let row = BOARD.insertRow(r);
 		for(let c=0; c <= BOARD_SIZE; c++) {
@@ -29,28 +29,37 @@ function drawBoard() {
 	}	
 }
 
-function make_move(click) {
+function click_cell(click) {
 	let clickedCell = click.target.closest("td");
 	
 	if (!clickedCell.dataset.sign) {
 		let currentSign = sign
-		if(sign=="circle") sign="cross"; else sign="circle";
 		clickedCell.dataset.sign = currentSign
-		clickedCell.appendChild(mark[currentSign].cloneNode(true))
-
 		let curRow=clickedCell.parentNode.rowIndex;
 		let curCol=clickedCell.cellIndex;
-		
-		let five = checkFive(curRow, curCol, currentSign)
-		if(five.win) Win(currentSign, five.array);
 
-		supChannel.send({
-	        type: 'broadcast',
-	        event: 'move',
-	        payload: {row: curRow, col: curCol, sign: currentSign},
-	    })
+		make_move(curRow, curCol, currentSign)	
+
 	}
 };
+
+function make_move(curRow, curCol, currentSign, clickedCell) {
+	cell = clickedCell || BOARD.rows[curRow].cells[curCol]
+	cell.appendChild(mark[currentSign].cloneNode(true))
+	if(sign=="circle") sign="cross"; else sign="circle";
+		
+	let five = checkFive(curRow, curCol, currentSign)
+	if(five.win) Win(currentSign, five.array);
+
+	//clickedCell is only passed if move is made locally - and only then should be broadcasted
+	if(clickedCell == null) {
+		supChannel.send({
+			type: 'broadcast',
+			event: 'move',
+			payload: {row: curRow, col: curCol, sign: currentSign},
+		})	
+	}
+}
 
 function checkFive(cRow, cCol, sign) {
 
