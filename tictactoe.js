@@ -39,7 +39,7 @@ function click_cell(click) {
 	}
 };
 
-function make_move(curRow, curCol, currentSign, clickedCell, mode) {
+function make_move(curRow, curCol, currentSign, mode) {
 
 	// draw the sign
 	cell = BOARD.rows[curRow].cells[curCol]
