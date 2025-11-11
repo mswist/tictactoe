@@ -2,19 +2,18 @@ const BOARD = document.getElementById("board");
 const BOARD_SIZE = 50;
 const CELL_SIZE = 31;
 
-const mark = {
+// game state - moves and current sign
+const state = {
+	"circle": [],
+	"cross": [],
+	"last_move": null,
+	"sign": "circle"
+}
+
+const templates = {
 	"circle": document.getElementById("circle").content.firstElementChild,
 	"cross": document.getElementById("cross").content.firstElementChild
 }
-
-//object containing all moves
-const moves = {
-	"last": {},
-	"all": []
-}
-
-//current sign
-let sign = "circle";
 
 drawBoard()
 	
@@ -31,52 +30,46 @@ function drawBoard() {
 
 function click_cell(click) {
 	let clickedCell = click.target.closest("td");
-	
-	if (!clickedCell.dataset.sign) {
-		let currentSign = sign
-		clickedCell.dataset.sign = currentSign
-		let curRow=clickedCell.parentNode.rowIndex;
-		let curCol=clickedCell.cellIndex;
 
-		make_move(curRow, curCol, currentSign, clickedCell)	
+	let curRow=clickedCell.parentNode.rowIndex;
+	let curCol=clickedCell.cellIndex;
 
+	if (!findMove([...state.circle, ...state.cross], [curRow, curCol])) {
+		make_move(curRow, curCol, state.sign, "local")	
 	}
 };
 
-function make_move(curRow, curCol, currentSign, clickedCell) {
-	cell = clickedCell || BOARD.rows[curRow].cells[curCol]
-	cell.appendChild(mark[currentSign].cloneNode(true))
-	if(sign=="circle") sign="cross"; else sign="circle";
+function make_move(curRow, curCol, currentSign, clickedCell, mode) {
 
-	queueMicrotask(() => {
-		console.log(cell.children)
-  		let five = checkFive(curRow, curCol, currentSign)
-		if(five.win) Win(currentSign, five.array);
-		
-		//clickedCell is only passed if move is made locally - and only then should be broadcasted
-		if(clickedCell) {
-			supChannel.send({
-				type: 'broadcast',
-				event: 'move',
-				move: {row: curRow, col: curCol, sign: currentSign},
-			})	
-		}
-	});
+	// draw the sign
+	cell = BOARD.rows[curRow].cells[curCol]
+	cell.appendChild(templates[currentSign].cloneNode(true))
+
+	// update the state
+	state[currentSign].push([curRow, curCol])
+	state.sign = currentSign == "circle" ? "cross" : "circle";
+	state.last_move = {row: curRow, column: curCol, sign: currentSign}
+
+	// check if win
+	let five = checkFive(curRow, curCol, currentSign)
+	if(five.win) Win(currentSign, five.array);
+	
+	// if mode is local, broadcast the move
+	if(mode == "local") {
+		supChannel.send({
+			type: 'broadcast',
+			event: 'move',
+			move: {row: curRow, col: curCol, sign: currentSign},
+		})	
+	}
 }
 
 function checkFive(cRow, cCol, sign) {
 
 	let checkFive = {
-		"noInRow": 0,
 		"fiveArray": [],
-		set: (n) => {
-			checkFive.noInRow +=1;
-			checkFive.fiveArray.push(n)
-		},
-		clear: () => {
-			checkFive.noInRow = 0;
-			checkFive.fiveArray = []
-		}
+		set: (n) => checkFive.fiveArray.push(n),
+		clear: () => checkFive.fiveArray = []
 	}
 
 	const hFirst = Math.max(0,cCol-4);
@@ -86,27 +79,27 @@ function checkFive(cRow, cCol, sign) {
 
 // case 1: horizontal
 	for(let n=hFirst; n<=hLast; n+=1) {
-		if(BOARD.rows[cRow].cells[n].dataset.sign==sign) checkFive.set([cRow,n])
+		if(findMove(state[sign],[cRow, n]))	checkFive.set([cRow,n])
 		else checkFive.clear()
-		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
+		if (checkFive.fiveArray.length==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 2: vertical
 	for(let n=vFirst; n<=vLast; n+=1) {
-		if(BOARD.rows[n].cells[cCol].dataset.sign==sign) checkFive.set([n,cCol]) 
+		if(findMove(state[sign], [n, cCol]))	checkFive.set([n, cCol])			
 		else checkFive.clear()
-		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
+		if (checkFive.fiveArray.length==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 3: diagonal left
 	for(let n=hFirst, m=vFirst; n<=hLast && m<=vLast; n+=1, m+=1) {
-		if(BOARD.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
+		if(findMove(state[sign], [m, n])) checkFive.set([m,n])				
 		else checkFive.clear()
-		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
+		if (checkFive.fiveArray.length==5) return {"win": true, "array": checkFive.fiveArray};
 	};
 // case 4: diagonal right
 	for(let n=hLast, m=vFirst; n>=hFirst && m<=vLast; n-=1, m+=1) {
-		if(BOARD.rows[m].cells[n].dataset.sign==sign) checkFive.set([m,n])
+		if(findMove(state[sign], [m, n])) checkFive.set([m,n])
 		else checkFive.clear()
-		if (checkFive.noInRow==5) return {"win": true, "array": checkFive.fiveArray};
+		if (checkFive.fiveArray.length==5) return {"win": true, "array": checkFive.fiveArray};
 	};	
 	return {"win": false}
 }
@@ -122,5 +115,10 @@ function Win(sign, array) {
 
 supChannel.on('broadcast', { event: 'move' }, (payload) => {
 	console.log(payload)
-	make_move(payload.move.row, payload.move.col, payload.move.sign)
+	make_move(payload.move.row, payload.move.col, payload.move.sign, "online")
 })
+
+// check if the current move [row, col] exists in list of allMoves
+function findMove( allMoves, newMove ) {
+	return allMoves.some( m => m[0] == newMove[0] && m[1] == newMove[1])
+}
