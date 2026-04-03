@@ -59,7 +59,7 @@ function make_move(curRow, curCol, currentSign, mode) {
 		supChannel.send({
 			type: 'broadcast',
 			event: 'move',
-			move: {row: curRow, col: curCol, sign: currentSign},
+			payload: {move: {row: curRow, col: curCol, sign: currentSign}},
 		})	
 	}
 }
