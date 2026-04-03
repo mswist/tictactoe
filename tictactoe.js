@@ -113,7 +113,7 @@ function Win(sign, array) {
 	}, 300); 
 }
 
-supChannel.on('broadcast', { event: 'move' }, (payload) => {
+supChannel.on('broadcast', { event: 'move' }, ({payload}) => {
 	console.log(payload)
 	make_move(payload.move.row, payload.move.col, payload.move.sign, "online")
 })
